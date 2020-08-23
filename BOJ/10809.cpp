@@ -3,30 +3,78 @@
 
 using namespace std;
 
+class stack {
+private:
+    int data[10000];
+    int size = 0;
+public:
+    void push (int X);
+    void pop();
+    void Size();
+    bool empty();
+    void top();
+};
+
 int main() {
     // 출력 속도 상승
     ios_base::sync_with_stdio(false);
     cin.tie(nullptr);
 
+    int N;
+    cin >> N;
+
+    cin.ignore();
+
     string line;
-    getline(cin,line);
-
-    int alphabet[26] = {0};
-
-    // (ASCII) a: 97 / b: 98 ...
-    for (int i = 0; i < line.length(); i++) {
-        int alphabet_idx = int(line[i])-97; // a: 0번 / b: 1번 ...
-        // 처음 저장 체크
-        if (alphabet[alphabet_idx] == 0) {
-            // alphabet 배열값들 모두 0으로 초기화 되어있으니까 1 이상 값으로 idx 저장
-            alphabet[alphabet_idx] = i + 1;
+    stack s1;
+    while (N--) {
+        getline(cin,line);
+        if (line[0] == 's') s1.Size();
+        else if (line[0] == 'e') {
+            if (s1.empty()) cout << 1 << '\n';
+            else cout << 0 << '\n';
+        }
+        else if (line[0] == 't') {
+            s1.top();
+        }
+        else { // push or pop
+            if (line[1] == 'u') {
+                string num = line.substr(5);
+                int X = stoi(num);
+                s1.push(X);
+            }
+            else {
+                s1.pop();
+            }
         }
     }
-
-    for (int i : alphabet){
-        if (i == 0) cout << -1 << " ";
-        else cout << i - 1 << " ";
-    }
-
     return 0;
+}
+
+bool stack::empty() {
+    if (size == 0) return true;
+    else return false;
+}
+void stack::push(int X) {
+    data[size] = X;
+    size++;
+}
+
+void stack::pop() {
+    if (empty()) cout << -1 << '\n';
+    else {
+        int top = data[size-1];
+        data[size-1] = 0;
+        cout << top << '\n';
+        size--;
+    }
+}
+
+void stack::top() {
+    if (empty()) cout << -1 << '\n';
+    else cout << data[size-1] << '\n';
+}
+
+void stack::Size() {
+    cout << size << '\n';
 }
